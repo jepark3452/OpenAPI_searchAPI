@@ -32,6 +32,16 @@ public class HomeController {
         return new ModelAndView("/apiSampleXML");
     }
 	
+	@RequestMapping(value="/sample/apiSampleXMLPop.do")
+    public ModelAndView apiSampleXMLPop() throws Exception{
+        return new ModelAndView("/apiSampleXMLPop");
+    }
+	
+	@RequestMapping(value="/sample/popup/apiSamplePopup.do")
+    public ModelAndView apiSamplePopup() throws Exception{
+        return new ModelAndView("/popup/apiSamplePopup");
+    }
+	
 	@RequestMapping(value="/sample/getAddrApi.do")
     public void getAddrApi(HttpServletRequest req, ModelMap model, HttpServletResponse response) throws Exception {
 		// 요청변수 설정
