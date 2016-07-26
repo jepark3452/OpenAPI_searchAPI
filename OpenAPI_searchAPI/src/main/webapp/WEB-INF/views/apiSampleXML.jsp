@@ -19,12 +19,22 @@ $(document).ready(function() {
 	});
 });
 
-function getAddr(){
+function getAddr(page){
+	
+	if($('#keyword').val().length<2)
+	{
+		alert('조회할 주소를 두 글자 이상 입력해 주세요.');
+		$('#keyword').focus();
+		return false;
+	}
+	
+	if(page == null || page == 0) page = 1;
+	
 	// AJAX 주소 검색 요청
 	$.ajax({
 		url:"${cp}/sample/getAddrApi.do"								// 호출할 Controller API URL  
 		,type:"post"
-		,data:$("#form").serialize() 										// 요청 변수 설정
+		,data:$("#form").serialize()+"&currentPage="+page 		// 요청 변수 설정
 		,dataType:"xml"														// 데이터 결과 : XML
 		,success:function(xmlStr){										// xmlStr : 주소 검색 결과 XML 데이터
 			$("#list").html("");												// 결과 출력 영역 초기화
@@ -45,6 +55,14 @@ function getAddr(){
 }
 
 function makeList(xmlStr){
+	var totalCount = $(xmlStr).find("totalCount").text();
+	if(totalCount == 0) {
+		alert("검색 결과가 없습니다.");
+		return;
+	}
+	
+	var currentPage = $(xmlStr).find("currentPage").text();
+	var countPerPage = $(xmlStr).find("countPerPage").text();
 	var htmlStr = "";
 	htmlStr += "<table>";
 	// jquery를 이용한 XML 결과 데이터 파싱
@@ -65,7 +83,57 @@ function makeList(xmlStr){
 	htmlStr += "</table>";
 	// 결과 HTML을 FORM의 결과 출력 DIV에 삽입
 	$("#list").html(htmlStr);
+	
+	 $('#paging').html(
+		paintPager(currentPage, countPerPage, totalCount, 'getAddr')
+    );
 }	
+
+function paintPager(page, cpp, totalCnt, funcName){
+   var pageBlockCnt = 10;
+    var startBlockNum = (Math.floor((page-1)/(pageBlockCnt)) * pageBlockCnt) + 1;
+    var endBlockNum = (Math.ceil(page/pageBlockCnt) * pageBlockCnt);
+    //console.log("endBlockNum[(Math.ceil(page/pageBlockCnt) * pageBlockCnt)]: " + endBlockNum);
+    var lastBlockNum = Math.ceil((totalCnt)/cpp);
+    //console.log("lastBlockNum[Math.ceil(totalCnt/cpp]: " + lastBlockNum);
+    if(endBlockNum > lastBlockNum){
+        endBlockNum = lastBlockNum;
+    }
+    //console.log("lastBlockNum: " + lastBlockNum);
+    var prev = page - 1; if(prev < 1) prev = 1;
+    var next = page -0 + 1; if(next > lastBlockNum) next = lastBlockNum;
+    if(funcName == null) funcName = 'doSearch';
+    var pagerHtml = '';
+    //pagerHtml += '<span class="fst"><a href="javascript:_goPage(1, \'' +funcName+ '\');"><img src="${cp}/res_openapi/images/btn/board_button_first.png"/></a></span>'; // 처음
+    pagerHtml += '&nbsp;<span class="pre"><a href="javascript:_goPage('+prev+ ', \'' +funcName+ '\');">[이전]</a></span>&nbsp;'; // 이전
+    
+    //console.log("startBlockNum: " + startBlockNum + ",endBlockNum: " + endBlockNum);
+    for(var i=startBlockNum ;i<=endBlockNum;i++){
+    	//console.log("i: " + i);
+        if(i > lastBlockNum) continue;
+        if( i == page )
+            pagerHtml += '<span class="bar"><b><a href="javascript:_goPage('+i+ ', \'' +funcName+ '\');" class="current">' +i+ '</a></b></span>&nbsp;';
+        else
+            pagerHtml += '<span class="bar"><a href="javascript:_goPage('+i+ ', \'' +funcName+ '\');">' +i+ '</a></span>&nbsp;';
+    }
+    pagerHtml += '&nbsp;<span class="nxt"><a href="javascript:_goPage('+next+ ', \'' +funcName+ '\');">[다음]</a></span>'; // 다음
+    //pagerHtml += '<span class="end"><a href="javascript:_goPage('+lastBlockNum+ ', \'' +funcName+ '\');"><img src="${cp}/res_openapi/images/btn/board_button_last.png"/></a></span>'; // 끝
+    if(i == 1) pagerHtml = ""	;
+    return pagerHtml;
+}
+
+function _goPage(p, funcName){
+    eval(funcName+'('+p+')');
+}
+
+/**
+ * 주소 리턴. 오픈한 창에 getPopUpRtnVal 함수가 있어야 한다.
+ */
+function setAddr(zip, address)
+{
+	opener.getPopUpRtnVal(zip, address);
+	window.close();
+}
 
 </script>
 </script>
@@ -73,11 +141,12 @@ function makeList(xmlStr){
 </head>
 <body>
 <form name="form" id="form" method="post" onsubmit="return false">
-  <input type="hidden" name="currentPage" value="1"/>				<!-- 요청 변수 설정 (현재 페이지) -->
-  <input type="hidden" name="countPerPage" value="10"/>				<!-- 요청 변수 설정 (페이지당 출력 개수) -->
-  <input type="text" id="keyword" name="keyword" value=""/>						<!-- 요청 변수 설정 (키워드) -->
+  <input type="hidden" name="countPerPage" value="10"/>						<!-- 요청 변수 설정 (페이지당 출력 개수) -->
+  <input type="text" id="keyword" name="keyword" value=""/>				<!-- 요청 변수 설정 (키워드) -->
   <input type="button" onClick="getAddr();" value="주소검색하기"/>
+  
   <div id="list"> <!-- 검색 결과 리스트 출력 영역 --> </div>
+  <div id="paging" style="margin-top: 13px; height: 30px;" align="center"><!-- 페이징영역 --></div>
 </form>
 </body>
 </html>

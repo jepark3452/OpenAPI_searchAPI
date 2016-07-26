@@ -14,6 +14,7 @@
 		<ol>
 			<li><a href="${cp}/sample/apiSampleJSONP.do">apiSampleJSONP.jsp</a></li>
 			<li><a href="${cp}/sample/apiSampleXML.do">apiSampleXML.jsp</a></li>
+			<li><a href="${cp}/sample/apiSampleXMLPop.do">apiSampleXMLPop.jsp(팝업방식)</a></li>
 		</ol>
 	</div>
 </body>
