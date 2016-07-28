@@ -47,6 +47,19 @@ public class HomeController {
         return new ModelAndView("/popup/apiSamplePopup");
     }
 	
+	@RequestMapping(value="/sample/apiSamplePopUpAPI.do")
+    public ModelAndView apiSamplePopUpAPI() throws Exception{
+		ModelAndView mav = new ModelAndView("/apiSamplePopUpAPI");
+        return mav;
+    }
+	
+	@RequestMapping(value="/sample/popup/jusoPopup.do")
+    public ModelAndView jusoPopup() throws Exception{
+		ModelAndView mav = new ModelAndView("/popup/jusoPopup");
+		mav.addObject("confmKey", popConfmKey);
+        return mav;
+    }
+	
 	@RequestMapping(value="/sample/getAddrApi.do")
     public void getAddrApi(HttpServletRequest req, ModelMap model, HttpServletResponse response) throws Exception {
 		// 요청변수 설정

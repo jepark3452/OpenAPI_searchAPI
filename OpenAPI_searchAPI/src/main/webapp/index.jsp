@@ -6,15 +6,16 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>행정자치부-OpenAPI 우편번호 찾기 searchAPI</title>
+<title>행정자치부-OpenAPI 우편번호 찾기</title>
 </head>
 <body>
 	<div>
-		<h1>행정자치부 - OpenAPI 우편번호 찾기 searchAPI</h1>
+		<h1>행정자치부 - OpenAPI 우편번호 찾기</h1>
 		<ol>
 			<li><a href="${cp}/sample/apiSampleJSONP.do">apiSampleJSONP.jsp</a></li>
 			<li><a href="${cp}/sample/apiSampleXML.do">apiSampleXML.jsp</a></li>
-			<li><a href="${cp}/sample/apiSampleXMLPop.do">apiSampleXMLPop.jsp(팝업방식)</a></li>
+			<li><a href="${cp}/sample/apiSampleXMLPop.do">apiSampleXMLPop.jsp(팝업 방식)</a></li>
+			<li><a href="${cp}/sample/apiSamplePopUpAPI.do">apiSamplePopUpAPI.jsp(PopUpAPI-팝업 방식)</a></li>
 		</ol>
 	</div>
 </body>
