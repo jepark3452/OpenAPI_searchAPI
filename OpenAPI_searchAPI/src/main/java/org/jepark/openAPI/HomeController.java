@@ -17,13 +17,18 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class HomeController {
 	
-	@Value("${searchAPI.confmKey}")
-	private String confmKey;
+	// OpenAPI 우편번호 찾기 searchAPI confmKey
+	@Value("#{prop['searchAPI.confmKey']}")
+	private String searchConfmKey;
+	
+	// OpenAPI 우편번호 찾기 popupAPI confmKey
+	@Value("#{prop['popupAPI.confmKey']}")
+	private String popConfmKey;
 	
 	@RequestMapping(value="/sample/apiSampleJSONP.do")
     public ModelAndView apiSampleJSONP() throws Exception{
 		ModelAndView mav = new ModelAndView("/apiSampleJSONP");
-		mav.addObject("confmKey", confmKey);
+		mav.addObject("confmKey", searchConfmKey);
         return mav;
     }
 	
@@ -49,7 +54,7 @@ public class HomeController {
 		String countPerPage = req.getParameter("countPerPage");
 		String keyword = req.getParameter("keyword");
 		// OPEN API 호출 URL 정보 설정
-		String apiUrl = "http://www.juso.go.kr/addrlink/addrLinkApi.do?currentPage="+currentPage+"&countPerPage="+countPerPage+"&keyword="+URLEncoder.encode(keyword,"UTF-8")+"&confmKey="+confmKey;
+		String apiUrl = "http://www.juso.go.kr/addrlink/addrLinkApi.do?currentPage="+currentPage+"&countPerPage="+countPerPage+"&keyword="+URLEncoder.encode(keyword,"UTF-8")+"&confmKey="+searchConfmKey;
 		System.out.println("[apiUrl]: " + apiUrl.toString());
 		URL url = new URL(apiUrl);
     	BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream(),"UTF-8"));

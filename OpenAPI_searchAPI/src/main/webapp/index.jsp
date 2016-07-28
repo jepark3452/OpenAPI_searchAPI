@@ -6,11 +6,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>행정자치부-openAPI SAMPLE</title>
+<title>행정자치부-OpenAPI 우편번호 찾기 searchAPI</title>
 </head>
 <body>
 	<div>
-		<h1>행정자치부 openAPI SAMPLE</h1>
+		<h1>행정자치부 - OpenAPI 우편번호 찾기 searchAPI</h1>
 		<ol>
 			<li><a href="${cp}/sample/apiSampleJSONP.do">apiSampleJSONP.jsp</a></li>
 			<li><a href="${cp}/sample/apiSampleXML.do">apiSampleXML.jsp</a></li>
